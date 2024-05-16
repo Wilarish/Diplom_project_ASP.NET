@@ -43,7 +43,7 @@ namespace FlowerShop.Controllers
         {
             // Сохранение деталей выполненного заказа
             
-            return NoContent();
+            return Ok("put ok");
         }
     }
 
