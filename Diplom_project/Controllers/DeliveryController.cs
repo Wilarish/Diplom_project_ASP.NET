@@ -3,6 +3,7 @@ using Diplom_project.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace FlowerShop.Controllers
 {
@@ -10,7 +11,12 @@ namespace FlowerShop.Controllers
     [ApiController]
     public class OrdersController : ControllerBase
     {
-        private readonly OrderService ordersService = new OrderService();
+        private readonly OrderService ordersService;  // = new OrderService();
+
+        public OrdersController(OrderService _ordersService)
+        {
+            this.ordersService = _ordersService;
+        }
        
        
 
