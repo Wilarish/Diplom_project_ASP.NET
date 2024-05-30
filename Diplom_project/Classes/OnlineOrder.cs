@@ -72,8 +72,7 @@ namespace Diplom_project.Classes
     [BsonIgnoreExtraElements]
     public class CustomerInfo
     {
-        //[BsonId]
-        [BsonElement("OrderId")]
+        [BsonId]
         public ObjectId OrderId { get; set; }
 
         [BsonElement("Name")]
@@ -91,7 +90,6 @@ namespace Diplom_project.Classes
             Name = _name;
             Address = _address;
             PhoneNumber = _phoneNumber;
-            OrderId =  new ObjectId();
         }
     }
 }
