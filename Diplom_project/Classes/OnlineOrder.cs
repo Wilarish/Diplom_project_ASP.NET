@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR.Protocol;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Diplom_project.Classes
 {
@@ -17,15 +18,29 @@ namespace Diplom_project.Classes
             TotalSum = _totalSum;
         }
     }
+  
     public class OnlineOrder
     {
-        public ObjectId OrderId;
-        public CustomerInfo CustomerInfo;
-        public FlowerType[] FlowerType;
-        public DateTime CreatedAt;
-        public DateTime CompletedAt;
-        public bool IsFulfilled;
-        public int TotalSum;
+        [BsonId]
+        public ObjectId OrderId { get; set; }
+
+        [BsonElement("CustomerInfo")]
+        public CustomerInfo CustomerInfo { get; set; }
+
+        [BsonElement("FlowerType")]
+        public FlowerType[] FlowerType { get; set; }
+
+        [BsonElement("CreatedAt")]
+        public DateTime CreatedAt { get; set; }
+
+        [BsonElement("CompletedAt")]
+        public DateTime CompletedAt { get; set; }
+
+        [BsonElement("IsFulfilled")]
+        public bool IsFulfilled { get; set; }
+
+        [BsonElement("TotalSum")]
+        public int TotalSum { get; set; }
 
 
         public OnlineOrder( CustomerInfo _customerInfo, FlowerType[] _flowerType, bool _isFulfilled, int _totalSum)
@@ -53,11 +68,22 @@ namespace Diplom_project.Classes
             FlowerTypeId = _flowerTypeId;
         }
     }
+
+    [BsonIgnoreExtraElements]
     public class CustomerInfo
     {
-        public string Name;
-        public string Address;
-        public string PhoneNumber;
+        //[BsonId]
+        [BsonElement("OrderId")]
+        public ObjectId OrderId { get; set; }
+
+        [BsonElement("Name")]
+        public string Name { get; set; }
+
+        [BsonElement("Address")]
+        public string Address { get; set; }
+
+        [BsonElement("PhoneNumber")]
+        public string PhoneNumber { get; set; }
        
 
         public CustomerInfo(string _name, string _address, string _phoneNumber)
@@ -65,6 +91,7 @@ namespace Diplom_project.Classes
             Name = _name;
             Address = _address;
             PhoneNumber = _phoneNumber;
+            OrderId =  new ObjectId();
         }
     }
 }

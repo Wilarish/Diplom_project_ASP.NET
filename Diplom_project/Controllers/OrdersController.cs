@@ -1,6 +1,8 @@
 ﻿using Diplom_project.Classes;
+using Diplom_project.Repositories;
 using Diplom_project.Services;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +13,7 @@ namespace FlowerShop.Controllers
     [ApiController]
     public class OrdersController : ControllerBase
     {
-        private readonly OrderService ordersService;  // = new OrderService();
+        private readonly OrderService ordersService;
 
         public OrdersController(OrderService _ordersService)
         {
@@ -21,11 +23,13 @@ namespace FlowerShop.Controllers
        
 
         [HttpGet]
-        public IActionResult GetUnfulfilledOrders()
+        public async Task<IActionResult> GetUnfulfilledOrders()
         {
             // Получение всех текущих (невыполненных в данный момент) заказов цветов
 
-            return Ok(this.ordersService.GetOk());
+            //return Ok(await this.ordersService.GetOkRepo());
+
+            return Ok(await DbCollections.OrdersCollection.Find("{}").ToListAsync());
         }
 
         [HttpPost]
