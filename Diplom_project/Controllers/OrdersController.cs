@@ -27,9 +27,7 @@ namespace FlowerShop.Controllers
         {
             // Получение всех текущих (невыполненных в данный момент) заказов цветов
 
-            //return Ok(await this.ordersService.GetOkRepo());
-
-            return Ok(await DbCollections.OrdersCollection.Find("{}").ToListAsync());
+            return Ok(await this.ordersService.GetAllOrders());
         }
 
         [HttpPost]
@@ -40,30 +38,52 @@ namespace FlowerShop.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{orderId}")]
-        public IActionResult DeleteOrder(Guid orderId)
+        [HttpPost("{orderId}")]
+        public async Task<IActionResult> SaveFulfilledOrder(string orderId)
         {
-            // Удаление текущего заказа
-            
-            return NoContent();
+            // Сохранение деталей выполненного заказа в другую коллекцию
+
+            bool fulfilled = await this.ordersService.FulfilledOrder(orderId);
+
+            if (fulfilled)
+            {
+                return NoContent();
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
-        [HttpDelete("deleteAll")]
-        public IActionResult DeleteAllOrders(Guid orderId)
+        [HttpDelete("{orderId}")]
+        public async Task<IActionResult> DeleteOrder(string orderId)
         {
-            // Удаление текущего заказа
+            // Удаление (при отмене) текущего заказа
+
+            bool deleteResult = await this.ordersService.DeleteOrderById(orderId);
+
+            if (deleteResult)
+            {
+                return NoContent();
+            }
+            else 
+            { 
+                return NotFound();
+            }
+
+            
+        }
+
+        
+
+        [HttpDelete("deleteAll")]
+        public async Task<IActionResult> DeleteAllOrders(Guid orderId)
+        {
+            // Зачистка бд
 
             DbCollections.OrdersCollection.DeleteMany("{}");
 
             return NoContent();
-        }
-
-        [HttpPut("{orderId}")]
-        public IActionResult SaveFulfilledOrder(string orderId)
-        {
-            // Сохранение деталей выполненного заказа
-            
-            return Ok("put ok");
         }
     }
 
