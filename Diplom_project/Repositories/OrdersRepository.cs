@@ -7,7 +7,7 @@ namespace Diplom_project.Repositories
 {
     public class OrdersRepository
     {
-        public async Task<List<CustomerInfo>> GetOkRepo()
+        public async Task<List<OnlineOrder>> GetOkRepo()
         {
             return await DbCollections.OrdersCollection.Find("{}").ToListAsync();
         }

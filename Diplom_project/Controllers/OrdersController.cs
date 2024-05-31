@@ -48,6 +48,16 @@ namespace FlowerShop.Controllers
             return NoContent();
         }
 
+        [HttpDelete("deleteAll")]
+        public IActionResult DeleteAllOrders(Guid orderId)
+        {
+            // Удаление текущего заказа
+
+            DbCollections.OrdersCollection.DeleteMany("{}");
+
+            return NoContent();
+        }
+
         [HttpPut("{orderId}")]
         public IActionResult SaveFulfilledOrder(string orderId)
         {

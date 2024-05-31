@@ -13,17 +13,17 @@ var builder = WebApplication.CreateBuilder(args);
 string mongoUrl = "mongodb+srv://tararammmm2004:w5iGTWlkB8HFRjes@cluster0.vwzbeey.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 MongoClient client = new MongoClient(mongoUrl);
 IMongoDatabase db = client.GetDatabase("Diplom");
-var collection = db.GetCollection<CustomerInfo>("Orders");
+var collection = db.GetCollection<OnlineOrder>("Orders");
 
 
-//FlowerType[] arr = { new FlowerType("rose", 1000, "12345"), new FlowerType("romashka", 500, "3214")};
+BouquetType[] arr = { new BouquetType("rose", 1000), new BouquetType("romashka", 500)};
 
 
-//OnlineOrder order = new OnlineOrder(new CustomerInfo("Ivan", "Moscow","8-800-999"), arr, false, 1500);
+OnlineOrder order = new OnlineOrder(new CustomerInfo("Ivan", "Moscow","8-800-999"), arr, false, 1500);
 
 
 
-collection.InsertOne(new CustomerInfo("Ivan", "Moscow", "8-800-999"));
+collection.InsertOne(order);
 
 DbCollections.OrdersCollection = collection;
 

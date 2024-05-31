@@ -6,6 +6,6 @@ namespace Diplom_project.Repositories
 {
     public class DbCollections
     {
-        public static IMongoCollection<CustomerInfo> OrdersCollection { get; set; }
+        public static IMongoCollection<OnlineOrder> OrdersCollection { get; set; }
     }
 }

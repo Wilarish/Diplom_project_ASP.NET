@@ -7,18 +7,19 @@ namespace Diplom_project.Classes
     public class OnlineOrderCreate
     {
         public CustomerInfo CustomerInfo;
-        public FlowerType[] FlowerType;
+        public BouquetType[] FlowerType;
         public int TotalSum;
 
 
-        public OnlineOrderCreate( CustomerInfo _customerInfo, FlowerType[] _flowerType, int _totalSum)
+        public OnlineOrderCreate( CustomerInfo _customerInfo, BouquetType[] _flowerType, int _totalSum)
         {
             CustomerInfo = _customerInfo;
             FlowerType = _flowerType;
             TotalSum = _totalSum;
         }
     }
-  
+
+    [BsonIgnoreExtraElements]
     public class OnlineOrder
     {
         [BsonId]
@@ -27,8 +28,8 @@ namespace Diplom_project.Classes
         [BsonElement("CustomerInfo")]
         public CustomerInfo CustomerInfo { get; set; }
 
-        [BsonElement("FlowerType")]
-        public FlowerType[] FlowerType { get; set; }
+        [BsonElement("BouquetType")]
+        public BouquetType[] BouquetType { get; set; }
 
         [BsonElement("CreatedAt")]
         public DateTime CreatedAt { get; set; }
@@ -43,11 +44,20 @@ namespace Diplom_project.Classes
         public int TotalSum { get; set; }
 
 
-        public OnlineOrder( CustomerInfo _customerInfo, FlowerType[] _flowerType, bool _isFulfilled, int _totalSum)
+        public OnlineOrder( CustomerInfo _customerInfo, BouquetType[] _bouquetType, bool _isFulfilled, int _totalSum)
         {
             OrderId = new ObjectId();
             CustomerInfo = _customerInfo;
-            FlowerType = _flowerType;
+
+            BouquetType = _bouquetType;
+            //var bouquetArr = new BsonArray();
+            //foreach (var bouquet in _bouquetType)
+            //{
+            //    bouquetArr.Add(bouquet.ToString());
+            //}
+
+            //BouquetType = new BsonDocument("bouquetType", bouquetArr);
+
             CreatedAt = DateTime.Now;
             CompletedAt = DateTime.MinValue;
             IsFulfilled = _isFulfilled;
@@ -55,25 +65,27 @@ namespace Diplom_project.Classes
 
         }
     }
-    public class FlowerType
-    {
-        public string FlowerName;
-        public int Cost;
-        public string FlowerTypeId;
 
-        public FlowerType(string _flowerName, int _cost, string _flowerTypeId)
+    [BsonIgnoreExtraElements]
+    public class BouquetType
+    {
+        [BsonElement("FlowerName")]
+        public string FlowerName { get; set; }
+
+        [BsonElement("Cost")]
+        public int Cost { get; set; }
+
+        public BouquetType(string _flowerName, int _cost)
         {
             FlowerName = _flowerName;
             Cost = _cost;
-            FlowerTypeId = _flowerTypeId;
         }
     }
+
 
     [BsonIgnoreExtraElements]
     public class CustomerInfo
     {
-        [BsonId]
-        public ObjectId OrderId { get; set; }
 
         [BsonElement("Name")]
         public string Name { get; set; }
@@ -83,7 +95,7 @@ namespace Diplom_project.Classes
 
         [BsonElement("PhoneNumber")]
         public string PhoneNumber { get; set; }
-       
+
 
         public CustomerInfo(string _name, string _address, string _phoneNumber)
         {
