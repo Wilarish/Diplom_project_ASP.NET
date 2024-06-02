@@ -1,21 +1,42 @@
 ﻿using Microsoft.AspNetCore.SignalR.Protocol;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using System.Text.Json.Serialization;
 
 namespace Diplom_project.Classes
 {
+   
+    
     public class OnlineOrderCreate
     {
+
+        public CustomerInfo CustomerInfo { get; set; }
+
+        public BouquetType[] BouquetType { get; set; }
+
+
+        public OnlineOrderCreate(CustomerInfo customerInfo, BouquetType[] bouquetType)
+        {
+            CustomerInfo = customerInfo;
+            BouquetType = bouquetType;
+        }
+    }
+    public class OnlineOrderView
+    {
+        public string OrderId;
         public CustomerInfo CustomerInfo;
-        public BouquetType[] FlowerType;
+        public BouquetType[] BouquetType;
+        public DateTime CreatedAt;
         public int TotalSum;
 
 
-        public OnlineOrderCreate( CustomerInfo _customerInfo, BouquetType[] _flowerType, int _totalSum)
+        public OnlineOrderView(string _orderId, CustomerInfo _customerInfo, BouquetType[] _bouquetType, int _totalSum, DateTime _createdAt)
         {
+            OrderId = _orderId;
             CustomerInfo = _customerInfo;
-            FlowerType = _flowerType;
+            BouquetType = _bouquetType;
             TotalSum = _totalSum;
+            CreatedAt = _createdAt;
         }
     }
 
@@ -48,16 +69,7 @@ namespace Diplom_project.Classes
         {
             OrderId = new ObjectId();
             CustomerInfo = _customerInfo;
-
             BouquetType = _bouquetType;
-            //var bouquetArr = new BsonArray();
-            //foreach (var bouquet in _bouquetType)
-            //{
-            //    bouquetArr.Add(bouquet.ToString());
-            //}
-
-            //BouquetType = new BsonDocument("bouquetType", bouquetArr);
-
             CreatedAt = DateTime.Now;
             CompletedAt = DateTime.MinValue;
             IsFulfilled = _isFulfilled;
@@ -71,14 +83,18 @@ namespace Diplom_project.Classes
     {
         [BsonElement("FlowerName")]
         public string FlowerName { get; set; }
-
+        
         [BsonElement("Cost")]
         public int Cost { get; set; }
 
-        public BouquetType(string _flowerName, int _cost)
+        [BsonElement("Count")]
+        public int Count { get; set; }
+
+        public BouquetType(string flowerName, int cost, int count)
         {
-            FlowerName = _flowerName;
-            Cost = _cost;
+            FlowerName = flowerName;
+            Cost = cost;
+            Count = count;
         }
     }
 
@@ -86,7 +102,7 @@ namespace Diplom_project.Classes
     [BsonIgnoreExtraElements]
     public class CustomerInfo
     {
-
+   
         [BsonElement("Name")]
         public string Name { get; set; }
 
@@ -97,11 +113,11 @@ namespace Diplom_project.Classes
         public string PhoneNumber { get; set; }
 
 
-        public CustomerInfo(string _name, string _address, string _phoneNumber)
+        public CustomerInfo(string name, string address, string phoneNumber)
         {
-            Name = _name;
-            Address = _address;
-            PhoneNumber = _phoneNumber;
+            Name = name;
+            Address = address;
+            PhoneNumber = phoneNumber;
         }
     }
 }

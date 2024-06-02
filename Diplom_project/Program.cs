@@ -21,7 +21,7 @@ DbCollections.OrdersCollection = db.GetCollection<OnlineOrder>("Orders");
 DbCollections.OrdersFulfilledfCollection = db.GetCollection<OnlineOrder>("FulfilledOrders");
 
 
-BouquetType[] arr = { new BouquetType("rose", 1000), new BouquetType("romashka", 500)};
+BouquetType[] arr = { new BouquetType("rose", 1000, 1), new BouquetType("romashka", 500, 1)};
 
 
 OnlineOrder order = new OnlineOrder(new CustomerInfo("Ivan", "Moscow","8-800-999"), arr, false, 1500);

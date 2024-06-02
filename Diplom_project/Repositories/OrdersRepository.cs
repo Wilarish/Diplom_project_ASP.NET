@@ -11,15 +11,22 @@ namespace Diplom_project.Repositories
         {
             return await DbCollections.OrdersCollection.Find("{}").ToListAsync();
         }
-        public async Task<bool> DeleteOrderById(ObjectId odrerId)
-        {
-            var result = await DbCollections.OrdersCollection.DeleteOneAsync(Builders<OnlineOrder>.Filter.Eq("_id", odrerId));
-            return result.DeletedCount > 0;
-        }
-
-        public async Task<List<OnlineOrder>> ReturnOrderById(ObjectId orderId)
+        public async Task<List<OnlineOrder>> GetOrderById(ObjectId orderId)
         {
             return await DbCollections.OrdersCollection.Find(Builders<OnlineOrder>.Filter.Eq("_id", orderId)).ToListAsync();
+        }
+        public async void CreateNewOrder(OnlineOrder order)
+        {
+            await DbCollections.OrdersCollection.InsertOneAsync(order);
+        }
+        public async Task<bool> DeleteOrderById(ObjectId orderId)
+        {
+            var result = await DbCollections.OrdersCollection.DeleteOneAsync(Builders<OnlineOrder>.Filter.Eq("_id", orderId));
+            return result.DeletedCount > 0;
+        }
+        public async void DeleteAllOrders()
+        {
+            await DbCollections.OrdersCollection.DeleteManyAsync("{}");
         }
     }
 }

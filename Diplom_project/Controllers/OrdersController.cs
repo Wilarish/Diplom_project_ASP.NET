@@ -2,10 +2,14 @@
 using Diplom_project.Repositories;
 using Diplom_project.Services;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Newtonsoft.Json;
+
+
 
 namespace FlowerShop.Controllers
 {
@@ -30,12 +34,32 @@ namespace FlowerShop.Controllers
             return Ok(await this.ordersService.GetAllOrders());
         }
 
-        [HttpPost]
-        public IActionResult AddNewOrder([FromBody] OnlineOrderCreate order)
+        [HttpGet("{orderId}")]
+        public async Task<IActionResult> GetOrderByid(string orderId)
         {
-            // Добавление нового заказа
+            //Get one unfulfilled order
 
-            return NoContent();
+            var order = await this.ordersService.GetOrderById(orderId);
+
+            if (order != null)
+            {
+                return Ok(order);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddNewOrder([FromBody] OnlineOrderCreate order)
+        {
+            // creating new onlineOrder
+
+            var OrderView = await this.ordersService.CreateOrder(order);
+
+            return Ok(JsonConvert.SerializeObject(OrderView, Formatting.Indented));
+
         }
 
         [HttpPost("{orderId}")]
@@ -77,11 +101,11 @@ namespace FlowerShop.Controllers
         
 
         [HttpDelete("deleteAll")]
-        public async Task<IActionResult> DeleteAllOrders(Guid orderId)
+        public async Task<IActionResult> DeleteAllOrders()
         {
-            // Зачистка бд
+            // deleting collection of unfulfilled orders
 
-            DbCollections.OrdersCollection.DeleteMany("{}");
+            this.ordersService.DeleteAllOrders();
 
             return NoContent();
         }
