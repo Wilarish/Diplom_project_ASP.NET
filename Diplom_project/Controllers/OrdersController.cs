@@ -78,7 +78,9 @@ namespace FlowerShop.Controllers
         }
 
         [HttpPost("{orderId}")]
-        public async Task<IActionResult> SaveFulfilledOrder(string orderId)
+        public async Task<IActionResult> SaveFulfilledOrder(
+            [StringLength(24, MinimumLength = 24, ErrorMessage = "orderId length must be 24 symbols")]
+            string orderId)
         {
 
             bool fulfilled = await this.ordersService.FulfilledOrder(orderId);
@@ -91,7 +93,9 @@ namespace FlowerShop.Controllers
         }
 
         [HttpDelete("{orderId}")]
-        public async Task<IActionResult> DeleteOrder(string orderId)
+        public async Task<IActionResult> DeleteOrder(
+            [StringLength(24, MinimumLength = 24, ErrorMessage = "orderId length must be 24 symbols")]
+            string orderId)
         {
 
             bool deleteResult = await this.ordersService.DeleteOrderById(orderId);
