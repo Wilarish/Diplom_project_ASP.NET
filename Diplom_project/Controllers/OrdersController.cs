@@ -31,11 +31,13 @@ namespace FlowerShop.Controllers
         {
             // Получение всех текущих (невыполненных в данный момент) заказов цветов
 
-            return Ok(await this.ordersService.GetAllOrders());
+            var orders = await ordersService.GetAllOrders();
+
+            return Ok(JsonConvert.SerializeObject(orders, Formatting.Indented));
         }
 
         [HttpGet("{orderId}")]
-        public async Task<IActionResult> GetOrderByid(string orderId)
+        public async Task<IActionResult> GetOrderById(string orderId)
         {
             //Get one unfulfilled order
 
@@ -43,7 +45,7 @@ namespace FlowerShop.Controllers
 
             if (order != null)
             {
-                return Ok(order);
+                return Ok(JsonConvert.SerializeObject(order, Formatting.Indented));
             }
             else
             {

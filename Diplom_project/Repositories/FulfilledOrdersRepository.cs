@@ -7,7 +7,7 @@ namespace Diplom_project.Repositories
     {
         public async void AddOrderToFulfilled(OnlineOrder onlineOrder)
         {
-            await DbCollections.OrdersFulfilledfCollection.InsertOneAsync(onlineOrder);
+            await DbCollections.OrdersFulfilledCollection.InsertOneAsync(onlineOrder);
         }
     }
 
