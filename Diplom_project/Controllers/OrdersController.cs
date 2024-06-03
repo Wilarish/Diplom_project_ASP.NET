@@ -8,12 +8,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Newtonsoft.Json;
-
-
+using System.ComponentModel.DataAnnotations;
 
 namespace FlowerShop.Controllers
 {
-    [Route("api/orders")]
+    [Route("orders")]
     [ApiController]
     public class OrdersController : ControllerBase
     {
@@ -21,15 +20,14 @@ namespace FlowerShop.Controllers
 
         public OrdersController(OrderService _ordersService)
         {
-            this.ordersService = _ordersService;
+            ordersService = _ordersService;
         }
        
        
 
         [HttpGet]
-        public async Task<IActionResult> GetUnfulfilledOrders()
+        public async Task<IActionResult> GetAllOrders()
         {
-            // Получение всех текущих (невыполненных в данный момент) заказов цветов
 
             var orders = await ordersService.GetAllOrders();
 
@@ -37,28 +35,43 @@ namespace FlowerShop.Controllers
         }
 
         [HttpGet("{orderId}")]
-        public async Task<IActionResult> GetOrderById(string orderId)
+        public async Task<IActionResult> GetOrderById(
+            [StringLength(24, MinimumLength = 24, ErrorMessage = "orderId length must be 24 symbols")]
+            string orderId)
         {
-            //Get one unfulfilled order
-
             var order = await this.ordersService.GetOrderById(orderId);
 
-            if (order != null)
-            {
-                return Ok(JsonConvert.SerializeObject(order, Formatting.Indented));
-            }
-            else
+            if (order == null)
             {
                 return NotFound();
+                
             }
+            return Ok(JsonConvert.SerializeObject(order, Formatting.Indented));
+        }
+
+        [HttpGet("phone-number/{phoneNumber}")]
+        public async Task<IActionResult> GetOrdersByPhoneNumber(string phoneNumber)
+        {
+            var orders = await ordersService.GetOrdersByPhoneNumber(phoneNumber);
+
+            if (orders == null)
+            {
+                return NotFound();
+                
+            }
+            return Ok(JsonConvert.SerializeObject(orders, Formatting.Indented));
         }
 
         [HttpPost]
         public async Task<IActionResult> AddNewOrder([FromBody] OnlineOrderCreate order)
         {
-            // creating new onlineOrder
 
-            var OrderView = await this.ordersService.CreateOrder(order);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var OrderView = this.ordersService.CreateOrder(order);
 
             return Ok(JsonConvert.SerializeObject(OrderView, Formatting.Indented));
 
@@ -67,45 +80,34 @@ namespace FlowerShop.Controllers
         [HttpPost("{orderId}")]
         public async Task<IActionResult> SaveFulfilledOrder(string orderId)
         {
-            // Сохранение деталей выполненного заказа в другую коллекцию
 
             bool fulfilled = await this.ordersService.FulfilledOrder(orderId);
 
-            if (fulfilled)
+            if (!fulfilled)
             {
-                return NoContent();
+                return NotFound();               
             }
-            else
-            {
-                return NotFound();
-            }
+            return NoContent();
         }
 
         [HttpDelete("{orderId}")]
         public async Task<IActionResult> DeleteOrder(string orderId)
         {
-            // Удаление (при отмене) текущего заказа
 
             bool deleteResult = await this.ordersService.DeleteOrderById(orderId);
 
-            if (deleteResult)
+            if (!deleteResult)
             {
-                return NoContent();
+                return NotFound();  
             }
-            else 
-            { 
-                return NotFound();
-            }
+            return NoContent();
 
-            
+
         }
-
-        
-
         [HttpDelete("deleteAll")]
         public async Task<IActionResult> DeleteAllOrders()
         {
-            // deleting collection of unfulfilled orders
+ 
 
             this.ordersService.DeleteAllOrders();
 

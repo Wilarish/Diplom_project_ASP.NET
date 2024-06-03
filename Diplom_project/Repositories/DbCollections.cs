@@ -9,11 +9,12 @@ namespace Diplom_project.Repositories
         public static IMongoCollection<OnlineOrder>? OrdersCollection { get; set; }
         public static IMongoCollection<OnlineOrder>? OrdersFulfilledCollection { get; set; }
 
-        public static void DbConnection() 
+        public static void DbConnection()
         {
-            //string mongoUrl = "mongodb+srv://tararammmm2004:w5iGTWlkB8HFRjes@cluster0.vwzbeey.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
             string mongoUrl = "mongodb://localhost:27017";
+
+            //string mongoUrl = Environment.GetEnvironmentVariable("MONGO_URI");
 
             MongoClient client = new MongoClient(mongoUrl);
             IMongoDatabase db = client.GetDatabase("Diplom");

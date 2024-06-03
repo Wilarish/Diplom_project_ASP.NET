@@ -6,12 +6,12 @@ using MongoDB.Driver.Core.Configuration;
 using MongoDB.Driver;
 using MongoDB.Bson;
 using Diplom_project.Classes;
+using Diplom_project.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 DbCollections.DbConnection();
-
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -20,10 +20,14 @@ builder.Services.AddSwaggerGen();
 builder.Services
     .AddTransient<FulfilledOrdersRepository>()
     .AddTransient<OrdersRepository>()
+    .AddTransient<OrderFulfilledService>()
     .AddTransient<OrderService>()
+    .AddTransient<OrdersFulfilledController>()
     .AddTransient<OrdersController>();
 
 var app = builder.Build();
+
+
 
 
 if (app.Environment.IsDevelopment())

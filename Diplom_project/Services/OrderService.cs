@@ -16,14 +16,14 @@ namespace Diplom_project.Services
         }
         
        
-        public async Task<List<OnlineOrder>> GetAllOrders()
+        public async Task<List<OnlineOrderView>> GetAllOrders()
         {
-            return await this.ordersRepository.GetAllOrders();
+            return await this.ordersRepository.GetAllViewOrders();
         }
 
-        public async Task<OnlineOrder?> GetOrderById(string orderId)
+        public async Task<OnlineOrderView?> GetOrderById(string orderId)
         {
-            var ordersList = await this.ordersRepository.GetOrderById(new ObjectId(orderId));
+            var ordersList = await this.ordersRepository.GetViewOrderById(new ObjectId(orderId));
             if (ordersList.Count == 0)
             {
                 return null;
@@ -32,18 +32,28 @@ namespace Diplom_project.Services
 
         }
 
-        public async Task<OnlineOrderView> CreateOrder(OnlineOrderCreate orderCreate)
+        public async Task<List<OnlineOrderView>> GetOrdersByPhoneNumber(string phoneNumber)
+        {
+            var ordersList = await this.ordersRepository.GetViewOrdersByPhoneNumber(phoneNumber);
+            if (ordersList.Count == 0)
+            {
+                return null;
+            }
+            return ordersList;
+
+        }
+        public OnlineOrderView CreateOrder(OnlineOrderCreate orderCreate)
         {
             int totalSum = 0;
-            foreach (BouquetType bouquets in orderCreate.BouquetType)
+            foreach (BouquetType bouquets in orderCreate.BouquetTypes)
             {
                 totalSum += bouquets.Cost * bouquets.Count;
             }
-            var orderDb = new OnlineOrder(orderCreate.CustomerInfo, orderCreate.BouquetType, false, totalSum);
+            var orderDb = new OnlineOrder(orderCreate.CustomerInfo, orderCreate.BouquetTypes, false, totalSum);
 
             this.ordersRepository.CreateNewOrder(orderDb);
 
-            return new OnlineOrderView(orderDb.OrderId.ToJson(), orderDb.CustomerInfo, orderDb.BouquetType, totalSum, orderDb.CreatedAt);
+            return new OnlineOrderView(orderDb.OrderId, orderDb.CustomerInfo, orderDb.BouquetType, totalSum, orderDb.CreatedAt);
         }
 
         public async Task<bool> DeleteOrderById(string orderId)
@@ -55,7 +65,7 @@ namespace Diplom_project.Services
             var order = await this.ordersRepository.GetOrderById(new ObjectId(orderId));
             if (order.Count == 0) 
             {
-                return false;
+                return false;  
             }
             order[0].IsFulfilled = true;
             order[0].CompletedAt = DateTime.Now;

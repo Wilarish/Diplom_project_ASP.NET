@@ -7,13 +7,38 @@ namespace Diplom_project.Repositories
 {
     public class OrdersRepository
     {
-        public async Task<List<OnlineOrder>> GetAllOrders()
+        public async Task<List<OnlineOrderView>> GetAllViewOrders()
         {
-            return await DbCollections.OrdersCollection.Find("{}").ToListAsync();
+            var projection = Builders<OnlineOrder>.Projection.Exclude("CompletedAt").Exclude("IsFulfilled");
+            return await DbCollections.OrdersCollection
+                .Find("{}")
+                .Project<OnlineOrderView>(projection)
+                .ToListAsync();
+        }
+        public async Task<List<OnlineOrderView>> GetViewOrdersByPhoneNumber(string phoneNumber)
+        {
+            var filter = Builders<OnlineOrder>.Filter.Eq("CustomerInfo.PhoneNumber", phoneNumber);
+            var projection = Builders<OnlineOrder>.Projection.Exclude("CompletedAt").Exclude("IsFulfilled");
+            return await DbCollections.OrdersCollection
+                .Find(filter)
+                .Project<OnlineOrderView>(projection)
+                .ToListAsync();
+        }
+        public async Task<List<OnlineOrderView>> GetViewOrderById(ObjectId orderId)
+        {
+            var filter = Builders<OnlineOrder>.Filter.Eq("_id", orderId);
+            var projection = Builders<OnlineOrder>.Projection.Exclude("CompletedAt").Exclude("IsFulfilled");
+            return await DbCollections.OrdersCollection
+                .Find(filter)
+                .Project<OnlineOrderView>(projection)
+                .ToListAsync();
         }
         public async Task<List<OnlineOrder>> GetOrderById(ObjectId orderId)
         {
-            return await DbCollections.OrdersCollection.Find(Builders<OnlineOrder>.Filter.Eq("_id", orderId)).ToListAsync();
+            var filter = Builders<OnlineOrder>.Filter.Eq("_id", orderId);
+            return await DbCollections.OrdersCollection
+                .Find(filter)
+                .ToListAsync();
         }
         public async void CreateNewOrder(OnlineOrder order)
         {
