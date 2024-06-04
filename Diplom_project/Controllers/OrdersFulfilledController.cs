@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace Diplom_project.Controllers
 {
@@ -26,7 +27,9 @@ namespace Diplom_project.Controllers
         }
 
         [HttpGet("phone-number/{phoneNumber}")]
-        public async Task<IActionResult> GetOrdersByPhoneNumber(string phoneNumber)
+        public async Task<IActionResult> GetOrdersByPhoneNumber(
+            [StringLength(15, MinimumLength = 10, ErrorMessage = "it must be a phoneNumber")]
+            string phoneNumber)
         {
             var orders = await fulfilledOrdersService.GetOrdersByPhoneNumber(phoneNumber);
 

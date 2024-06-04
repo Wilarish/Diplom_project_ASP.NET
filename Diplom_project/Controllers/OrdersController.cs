@@ -50,7 +50,9 @@ namespace FlowerShop.Controllers
         }
 
         [HttpGet("phone-number/{phoneNumber}")]
-        public async Task<IActionResult> GetOrdersByPhoneNumber(string phoneNumber)
+        public async Task<IActionResult> GetOrdersByPhoneNumber(
+            [StringLength(15, MinimumLength = 10, ErrorMessage = "it must be a phoneNumber")]
+            string phoneNumber)
         {
             var orders = await ordersService.GetOrdersByPhoneNumber(phoneNumber);
 

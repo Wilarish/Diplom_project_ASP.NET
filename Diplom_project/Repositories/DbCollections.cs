@@ -12,9 +12,9 @@ namespace Diplom_project.Repositories
         public static void DbConnection()
         {
 
-            string mongoUrl = "mongodb://localhost:27017";
+            //string mongoUrl = "mongodb://localhost:27017";
 
-            //string mongoUrl = Environment.GetEnvironmentVariable("MONGO_URI");
+            string mongoUrl = Environment.GetEnvironmentVariable("MONGO_URI");
 
             MongoClient client = new MongoClient(mongoUrl);
             IMongoDatabase db = client.GetDatabase("Diplom");
