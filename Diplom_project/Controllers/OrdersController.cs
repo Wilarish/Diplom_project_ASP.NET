@@ -65,6 +65,7 @@ namespace FlowerShop.Controllers
         }
 
         [HttpPost]
+        [BasicAuth]
         public async Task<IActionResult> AddNewOrder([FromBody] OnlineOrderCreate order)
         {
 
