@@ -81,6 +81,7 @@ namespace FlowerShop.Controllers
         }
 
         [HttpPost("{orderId}")]
+        [BasicAuth]
         public async Task<IActionResult> SaveFulfilledOrder(
             [StringLength(24, MinimumLength = 24, ErrorMessage = "orderId length must be 24 symbols")]
             string orderId)
@@ -96,6 +97,7 @@ namespace FlowerShop.Controllers
         }
 
         [HttpDelete("{orderId}")]
+        [BasicAuth]
         public async Task<IActionResult> DeleteOrder(
             [StringLength(24, MinimumLength = 24, ErrorMessage = "orderId length must be 24 symbols")]
             string orderId)
@@ -112,6 +114,7 @@ namespace FlowerShop.Controllers
 
         }
         [HttpDelete("deleteAll")]
+        [BasicAuth]
         public async Task<IActionResult> DeleteAllOrders()
         {
  

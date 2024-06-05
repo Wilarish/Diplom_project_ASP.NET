@@ -1,11 +1,6 @@
 using Diplom_project.Repositories;
 using Diplom_project.Services;
 using FlowerShop.Controllers;
-using Microsoft.Extensions.DependencyInjection;
-using MongoDB.Driver.Core.Configuration;
-using MongoDB.Driver;
-using MongoDB.Bson;
-using Diplom_project.Classes;
 using Diplom_project.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);

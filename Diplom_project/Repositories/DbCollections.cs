@@ -16,7 +16,7 @@ namespace Diplom_project.Repositories
 
             string mongoUrl = Environment.GetEnvironmentVariable("MONGO_URL");
 
-            if(mongoUrl == null)
+            if (mongoUrl == null)
             {
                 mongoUrl = "mongodb://localhost:27017";
             }
