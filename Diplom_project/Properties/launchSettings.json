@@ -6,7 +6,9 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "MONGO_URL": "mongodb+srv://tararammmm2004:w5iGTWlkB8HFRjes@cluster0.vwzbeey.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+        "MONGO_URL": "mongodb+srv://tararammmm2004:w5iGTWlkB8HFRjes@cluster0.vwzbeey.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+        "LOGIN": "admin",
+        "PASSWORD": "12345"
 
       },
       "dotnetRunMessages": true,

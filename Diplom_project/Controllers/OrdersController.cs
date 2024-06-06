@@ -66,7 +66,7 @@ namespace FlowerShop.Controllers
 
         [HttpPost]
         [BasicAuth]
-        public async Task<IActionResult> AddNewOrder([FromBody] OnlineOrderCreate order)
+        public  IActionResult AddNewOrder([FromBody] OnlineOrderCreate order)
         {
 
             if (!ModelState.IsValid)
@@ -98,7 +98,7 @@ namespace FlowerShop.Controllers
 
         [HttpDelete("{orderId}")]
         [BasicAuth]
-        public async Task<IActionResult> DeleteOrder(
+        public async Task<IActionResult> DeleteOrderById(
             [StringLength(24, MinimumLength = 24, ErrorMessage = "orderId length must be 24 symbols")]
             string orderId)
         {
@@ -115,7 +115,7 @@ namespace FlowerShop.Controllers
         }
         [HttpDelete("deleteAll")]
         [BasicAuth]
-        public async Task<IActionResult> DeleteAllOrders()
+        public  IActionResult DeleteAllOrders()
         {
  
 

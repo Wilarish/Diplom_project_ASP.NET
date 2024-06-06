@@ -27,7 +27,7 @@ public class BasicAuthAttribute : TypeFilterAttribute
             var username = credentials[0];
             var password = credentials[1];
 
-            if (username != "admin" || password != "12345")
+            if (username != Environment.GetEnvironmentVariable("LOGIN") || password != Environment.GetEnvironmentVariable("PASSWORD"))
             {
                 context.Result = new UnauthorizedResult();
                 return;
