@@ -40,7 +40,7 @@ namespace Diplom_project.Repositories
                 .Find(filter)
                 .ToListAsync();
         }
-        public async void CreateNewOrder(OnlineOrder order)
+        public async void SaveNewOrder(OnlineOrder order)
         {
             await DbCollections.OrdersCollection.InsertOneAsync(order);
         }

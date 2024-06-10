@@ -51,7 +51,7 @@ namespace Diplom_project.Services
             }
             var orderDb = new OnlineOrder(orderCreate.CustomerInfo, orderCreate.BouquetTypes, false, totalSum);
 
-            this.ordersRepository.CreateNewOrder(orderDb);
+            this.ordersRepository.SaveNewOrder(orderDb);
 
             return new OnlineOrderView(orderDb.OrderId, orderDb.CustomerInfo, orderDb.BouquetType, totalSum, orderDb.CreatedAt);
         }
